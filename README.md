@@ -1,2 +1,2 @@
-# Tube-Rider
+# Tube Rider
 🎓 OpenGL game
