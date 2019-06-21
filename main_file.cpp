@@ -19,6 +19,7 @@ Place, Fifth Floor, Boston, MA  02110 - 1301  USA
 
 #define GLM_FORCE_RADIANS
 
+#include <vector>
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
@@ -31,16 +32,29 @@ Place, Fifth Floor, Boston, MA  02110 - 1301  USA
 #include "lodepng.h"
 #include "shaderprogram.h"
 #include "myCube.h"
+#include "gameObject.h"
 
 float speed_x=0;
 float speed_y=0;
 float aspectRatio=1;
 
+std::vector<gameObject> objects;
+
+void init(){
+    gameObject g;
+    g.Model = Models::teapot;
+    g.shaderProgram = spLambert;
+    g.M=glm::mat4(1.0f);
+	g.M=glm::rotate(g.M,angle_y,glm::vec3(1.0f,0.0f,0.0f)); //Wylicz macierz modelu
+	g.M=glm::rotate(g.M,angle_x,glm::vec3(0.0f,1.0f,0.0f)); //Wylicz macierz modelu
+
+    objects.push_back(g);
+}
+
 //Procedura obsługi błędów
 void error_callback(int error, const char* description) {
 	fputs(description, stderr);
 }
-
 
 void keyCallback(GLFWwindow* window,int key,int scancode,int action,int mods) {
     if (action==GLFW_PRESS) {

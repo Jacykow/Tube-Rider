@@ -7,7 +7,7 @@
 		<Option compiler="gcc" />
 		<Build>
 			<Target title="Debug">
-				<Option output="bin/Debug/pl_szkielet03_win" prefix_auto="1" extension_auto="1" />
+				<Option output="bin/Tube Rider" prefix_auto="1" extension_auto="1" />
 				<Option object_output="obj/Debug/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
@@ -55,6 +55,8 @@
 		<Unit filename="f_lambert.glsl" />
 		<Unit filename="f_lamberttextured.glsl" />
 		<Unit filename="f_textured.glsl" />
+		<Unit filename="gameObject.cpp" />
+		<Unit filename="gameObject.h" />
 		<Unit filename="lodepng.cpp" />
 		<Unit filename="lodepng.h" />
 		<Unit filename="main_file.cpp" />

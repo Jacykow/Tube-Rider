@@ -19,8 +19,6 @@ Place, Fifth Floor, Boston, MA  02110 - 1301  USA
 
 #include "shaderprogram.h"
 
-
-
 ShaderProgram *spLambert;
 ShaderProgram *spConstant;
 ShaderProgram *spTextured;
