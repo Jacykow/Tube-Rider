@@ -11,6 +11,7 @@
 
 class gameObject{
 public:
+    string name;
     glm::mat4 M;
     Models::Model* model;
     ShaderProgram* shaderProgram;

@@ -38,12 +38,13 @@ float speed_x=0;
 float speed_y=0;
 float angle_x=0; //Aktualny kąt obrotu obiektu
 float angle_y=0; //Aktualny kąt obrotu obiektu
+float timeDelta=0;
 float aspectRatio=1;
 
 std::vector<gameObject> objects;
 using namespace Models;
 
-void init(){
+void init(){ // To się będzie działo raz na start
 	glfwSetTime(0); //Zeruj timer
 
     gameObject g;
@@ -51,6 +52,20 @@ void init(){
     g.shaderProgram = spLambert;
     objects.push_back(g);
 }
+
+void update(){ // To się będzie działo w każdej klatce
+
+    angle_x+=speed_x*timeDelta;
+    angle_y+=speed_y*timeDelta;
+
+    for(int x=0;x<objects.size();x++){
+        objects[x].M=glm::mat4(1.0f);
+        objects[x].M=glm::rotate(objects[x].M,angle_y,glm::vec3(1.0f,0.0f,0.0f)); //Wylicz macierz modelu
+        objects[x].M=glm::rotate(objects[x].M,angle_x,glm::vec3(0.0f,1.0f,0.0f)); //Wylicz macierz modelu
+    }
+}
+
+
 
 //Procedura obsługi błędów
 void error_callback(int error, const char* description) {
@@ -99,7 +114,7 @@ void freeOpenGLProgram(GLFWwindow* window) {
 
 
 //Procedura rysująca zawartość sceny
-void drawScene(GLFWwindow* window,float angle_x,float angle_y) {
+void drawScene(GLFWwindow* window) {
 	//************Tutaj umieszczaj kod rysujący obraz******************l
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -117,14 +132,10 @@ void drawScene(GLFWwindow* window,float angle_x,float angle_y) {
     glUniformMatrix4fv(spLambert->u("P"),1,false,glm::value_ptr(P));
     glUniformMatrix4fv(spLambert->u("V"),1,false,glm::value_ptr(V));
 
+    update();
     for(int x=0;x<objects.size();x++){
-        objects[x].M=glm::mat4(1.0f);
-        objects[x].M=glm::rotate(objects[x].M,angle_y,glm::vec3(1.0f,0.0f,0.0f)); //Wylicz macierz modelu
-        objects[x].M=glm::rotate(objects[x].M,angle_x,glm::vec3(0.0f,1.0f,0.0f)); //Wylicz macierz modelu
         objects[x].draw();
     }
-
-    Models::teapot.drawSolid(); //Narysuj model
 
     glfwSwapBuffers(window); //Przerzuć tylny bufor na przedni
 }
@@ -164,10 +175,10 @@ int main(void)
 	init();
 	while (!glfwWindowShouldClose(window)) //Tak długo jak okno nie powinno zostać zamknięte
 	{
-        angle_x+=speed_x*glfwGetTime(); //Zwiększ/zmniejsz kąt obrotu na podstawie prędkości i czasu jaki upłynał od poprzedniej klatki
-        angle_y+=speed_y*glfwGetTime(); //Zwiększ/zmniejsz kąt obrotu na podstawie prędkości i czasu jaki upłynał od poprzedniej klatki
-        glfwSetTime(0); //Zeruj timer
-		drawScene(window,angle_x,angle_y); //Wykonaj procedurę rysującą
+        timeDelta = glfwGetTime();
+        glfwSetTime(0);
+
+        drawScene(window); //Wykonaj procedurę rysującą
 		glfwPollEvents(); //Wykonaj procedury callback w zalezności od zdarzeń jakie zaszły.
 	}
 
