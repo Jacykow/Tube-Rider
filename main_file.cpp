@@ -36,13 +36,13 @@ Place, Fifth Floor, Boston, MA  02110 - 1301  USA
 
 float speed_x=0;
 float speed_y=0;
-float angle_x=0; //Aktualny kąt obrotu obiektu
-float angle_y=0; //Aktualny kąt obrotu obiektu
+float shipAngle=0;
 float timeDelta=0;
 float aspectRatio=1;
 
 std::vector<gameObject> objects;
 using namespace Models;
+using namespace glm;
 
 void init(){ // To się będzie działo raz na start
 	glfwSetTime(0);
@@ -55,13 +55,14 @@ void init(){ // To się będzie działo raz na start
 
 void update(){ // To się będzie działo w każdej klatce
 
-    angle_x+=speed_x*timeDelta;
-    angle_y+=speed_y*timeDelta;
+    shipAngle+=speed_x*timeDelta;
 
     for(int x=0;x<objects.size();x++){
-        objects[x].M=glm::mat4(1.0f);
-        objects[x].M=glm::rotate(objects[x].M,angle_y,glm::vec3(1.0f,0.0f,0.0f)); //Wylicz macierz modelu
-        objects[x].M=glm::rotate(objects[x].M,angle_x,glm::vec3(0.0f,1.0f,0.0f)); //Wylicz macierz modelu
+        objects[x].M=mat4(1.0f);
+        objects[x].M=rotate(objects[x].M,shipAngle,vec3(0.0f,0.0f,1.0f));
+        objects[x].M=translate(objects[x].M,vec3(0.0f,-1.0f,0.0f));
+        objects[x].M=rotate(objects[x].M,-shipAngle,vec3(0.0f,0.0f,1.0f));
+
     }
 }
 
