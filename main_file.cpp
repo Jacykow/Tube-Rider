@@ -208,13 +208,11 @@ void keyCallback(GLFWwindow* window,int key,int scancode,int action,int mods) {
         if (key==GLFW_KEY_LEFT) speed_x=-1;
         if (key==GLFW_KEY_RIGHT) speed_x=1;
         if (key==GLFW_KEY_UP) speed_y=1;
-        if (key==GLFW_KEY_DOWN) speed_y=-1;
     }
     if (action==GLFW_RELEASE) {
         if (key==GLFW_KEY_LEFT) speed_x=0;
         if (key==GLFW_KEY_RIGHT) speed_x=0;
         if (key==GLFW_KEY_UP) speed_y=0;
-        if (key==GLFW_KEY_DOWN) speed_y=0;
     }
 }
 
