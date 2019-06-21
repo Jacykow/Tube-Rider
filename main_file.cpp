@@ -53,29 +53,50 @@ float speed_y=0;
 float shipAngle=0;
 float timeDelta=0;
 float aspectRatio=1;
-float distanceTraveled=-5;
+float placingDistance=-5;
+float distanceTraveled=1;
 int rowId=0;
+bool friendly=false;
 
 std::vector<obstacle> obstacles;
 gameObject ship;
 
-void addRow(int obstacleCount){
+int cType = 0;
+void collide(int type){
+    if(type==cType){
+        cType = type;
+        return;
+    }
+    cType = type;
+    if(type == 1){
+        printf("OOF\n");
+    } else if(type == 2) {
+        printf("brawo (sarkastycznie niczym seba)\n");
+    }
+}
+
+void addRow(int obstacleCount, int type){
     for(uint x=0;x<OBSTACLES_PER_ROW;x++){
         obstacle o;
 
         o.model = &cube;
         o.shaderProgram = spLambert;
-        o.z = distanceTraveled;
+        o.z = placingDistance;
         o.orderInRow = x;
         o.color = vec4(0.8f,0.5f,0.2f,1);
         o.type = 0;
+        obstacles.push_back(o);
+
         if(rand()%(OBSTACLES_PER_ROW-x)<obstacleCount){
             obstacleCount--;
-            o.type = 1;
-            o.color = vec4(0.8f,0.0f,0.0f,1);
+            o.type = type;
+            if(type == 1){
+                o.color = vec4(0.8f,0.0f,0.0f,1);
+            } else {
+                o.color = vec4(1.0f,0.84f,0.0f,1);
+            }
+            obstacles.push_back(o);
         }
-
-        obstacles.push_back(o);
     }
 }
 
@@ -96,11 +117,14 @@ void update(){ // W każdej klatce
     glfwSetTime(0);
 
     // SHIP
-    shipAngle-=speed_x*timeDelta;
+    shipAngle=shipAngle-speed_x*timeDelta;
+    if(shipAngle > FULL_CIRCLE)shipAngle-=FULL_CIRCLE;
+    if(shipAngle < 0)shipAngle+=FULL_CIRCLE;
 
     // OBSTACLES
-    float distanceDelta = timeDelta * 2.5f;
-    distanceTraveled -= distanceDelta;
+    float distanceDelta = timeDelta * (2.0f + speed_y * 3);
+    distanceTraveled += distanceDelta;
+    placingDistance -= distanceDelta;
     for(uint x=0;x<obstacles.size();x++){
         obstacles[x].z-=distanceDelta;
         if(obstacles[x].z < -5){
@@ -110,8 +134,40 @@ void update(){ // W każdej klatce
     }
 
     while(obstacles.size() < ROW_AMOUNT*OBSTACLES_PER_ROW){
-        addRow(3);
-        distanceTraveled+=DISTANCE_BETWEEN_ROWS;
+        float difficulty = distanceTraveled / 50 - 2;
+        difficulty = 0.4 + difficulty * 0.2 / (sqrt(1 + difficulty * difficulty));
+        if(difficulty < 0) difficulty = 0;
+
+        if(friendly){
+            addRow(difficulty * OBSTACLES_PER_ROW / 3, 2);
+        } else {
+            addRow(difficulty * OBSTACLES_PER_ROW, 1);
+        }
+        friendly = !friendly;
+        placingDistance+=DISTANCE_BETWEEN_ROWS;
+    }
+
+    int m=0;
+    for(int x=1;x<obstacles.size();x++){
+        if(abs(obstacles[x].z)<=abs(obstacles[m].z)){
+            m=x;
+        } else {
+            break;
+        }
+    }
+    for(int x=m-1;x>=0;x--){
+        if(obstacles[x].z < obstacles[m].z){
+            break;
+        }
+        if(abs(FULL_CIRCLE * obstacles[x].orderInRow / OBSTACLES_PER_ROW - shipAngle)
+           <=abs(FULL_CIRCLE * obstacles[m].orderInRow / OBSTACLES_PER_ROW - shipAngle)){
+            m=x;
+        }
+    }
+    m++;
+    collide(obstacles[m].type);
+    if(obstacles[m].type!=0){
+        obstacles.erase(obstacles.begin()+m);
     }
 }
 
@@ -149,10 +205,10 @@ void error_callback(int error, const char* description) {
 
 void keyCallback(GLFWwindow* window,int key,int scancode,int action,int mods) {
     if (action==GLFW_PRESS) {
-        if (key==GLFW_KEY_LEFT) speed_x=-PI/2;
-        if (key==GLFW_KEY_RIGHT) speed_x=PI/2;
-        if (key==GLFW_KEY_UP) speed_y=PI/2;
-        if (key==GLFW_KEY_DOWN) speed_y=-PI/2;
+        if (key==GLFW_KEY_LEFT) speed_x=-1;
+        if (key==GLFW_KEY_RIGHT) speed_x=1;
+        if (key==GLFW_KEY_UP) speed_y=1;
+        if (key==GLFW_KEY_DOWN) speed_y=-1;
     }
     if (action==GLFW_RELEASE) {
         if (key==GLFW_KEY_LEFT) speed_x=0;
@@ -194,7 +250,7 @@ void drawScene(GLFWwindow* window) {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	glm::mat4 V=glm::lookAt(
-         glm::vec3(0, 0, -5),
+         glm::vec3(0, 0, -3),
          glm::vec3(0,0,0),
          glm::rotateZ(vec3(0,1,0),shipAngle)); //Wylicz macierz widoku
 

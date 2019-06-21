@@ -694,8 +694,7 @@
 	<iostream>
 	"lodepng.h"
 
-1561152561 source:c:\users\user\desktop\tube rider\main_file.cpp
-	<vector>
+1561158262 source:c:\users\user\desktop\tube rider\main_file.cpp
 	<GL/glew.h>
 	<GLFW/glfw3.h>
 	<glm/glm.hpp>
@@ -704,6 +703,9 @@
 	<glm/gtx/rotate_vector.hpp>
 	<stdlib.h>
 	<stdio.h>
+	<fstream>
+	<vector>
+	<ctime>
 	"constants.h"
 	"allmodels.h"
 	"lodepng.h"
