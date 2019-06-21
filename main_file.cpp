@@ -36,18 +36,19 @@ Place, Fifth Floor, Boston, MA  02110 - 1301  USA
 
 float speed_x=0;
 float speed_y=0;
+float angle_x=0; //Aktualny kąt obrotu obiektu
+float angle_y=0; //Aktualny kąt obrotu obiektu
 float aspectRatio=1;
 
 std::vector<gameObject> objects;
+using namespace Models;
 
 void init(){
-    gameObject g;
-    g.Model = Models::teapot;
-    g.shaderProgram = spLambert;
-    g.M=glm::mat4(1.0f);
-	g.M=glm::rotate(g.M,angle_y,glm::vec3(1.0f,0.0f,0.0f)); //Wylicz macierz modelu
-	g.M=glm::rotate(g.M,angle_x,glm::vec3(0.0f,1.0f,0.0f)); //Wylicz macierz modelu
+	glfwSetTime(0); //Zeruj timer
 
+    gameObject g;
+    g.model = &teapot;
+    g.shaderProgram = spLambert;
     objects.push_back(g);
 }
 
@@ -116,11 +117,12 @@ void drawScene(GLFWwindow* window,float angle_x,float angle_y) {
     glUniformMatrix4fv(spLambert->u("P"),1,false,glm::value_ptr(P));
     glUniformMatrix4fv(spLambert->u("V"),1,false,glm::value_ptr(V));
 
-    glm::mat4 M=glm::mat4(1.0f);
-	M=glm::rotate(M,angle_y,glm::vec3(1.0f,0.0f,0.0f)); //Wylicz macierz modelu
-	M=glm::rotate(M,angle_x,glm::vec3(0.0f,1.0f,0.0f)); //Wylicz macierz modelu
-    glUniformMatrix4fv(spLambert->u("M"),1,false,glm::value_ptr(M));
-
+    for(int x=0;x<objects.size();x++){
+        objects[x].M=glm::mat4(1.0f);
+        objects[x].M=glm::rotate(objects[x].M,angle_y,glm::vec3(1.0f,0.0f,0.0f)); //Wylicz macierz modelu
+        objects[x].M=glm::rotate(objects[x].M,angle_x,glm::vec3(0.0f,1.0f,0.0f)); //Wylicz macierz modelu
+        objects[x].draw();
+    }
 
     Models::teapot.drawSolid(); //Narysuj model
 
@@ -159,9 +161,7 @@ int main(void)
 	initOpenGLProgram(window); //Operacje inicjujące
 
 	//Główna pętla
-	float angle_x=0; //Aktualny kąt obrotu obiektu
-	float angle_y=0; //Aktualny kąt obrotu obiektu
-	glfwSetTime(0); //Zeruj timer
+	init();
 	while (!glfwWindowShouldClose(window)) //Tak długo jak okno nie powinno zostać zamknięte
 	{
         angle_x+=speed_x*glfwGetTime(); //Zwiększ/zmniejsz kąt obrotu na podstawie prędkości i czasu jaki upłynał od poprzedniej klatki

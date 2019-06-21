@@ -12,7 +12,7 @@
 class gameObject{
 public:
     glm::mat4 M;
-    Models::Model& Model;
+    Models::Model* model;
     ShaderProgram* shaderProgram;
     void draw();
 };
