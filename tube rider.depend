@@ -694,13 +694,14 @@
 	<iostream>
 	"lodepng.h"
 
-1561147486 source:c:\users\user\desktop\tube rider\main_file.cpp
+1561152561 source:c:\users\user\desktop\tube rider\main_file.cpp
 	<vector>
 	<GL/glew.h>
 	<GLFW/glfw3.h>
 	<glm/glm.hpp>
 	<glm/gtc/type_ptr.hpp>
 	<glm/gtc/matrix_transform.hpp>
+	<glm/gtx/rotate_vector.hpp>
 	<stdlib.h>
 	<stdio.h>
 	"constants.h"
@@ -992,7 +993,7 @@
 1553530040 source:c:\users\user\desktop\tube rider\torus.cpp
 	"torus.h"
 
-1561146647 c:\users\user\desktop\tube rider\gameobject.h
+1561151677 c:\users\user\desktop\tube rider\gameobject.h
 	<GL/glew.h>
 	<GLFW/glfw3.h>
 	<glm/glm.hpp>
@@ -1002,6 +1003,22 @@
 	"allmodels.h"
 	"shaderprogram.h"
 
-1561146427 source:c:\users\user\desktop\tube rider\gameobject.cpp
+1561149078 source:c:\users\user\desktop\tube rider\gameobject.cpp
 	"gameObject.h"
+
+1551126943 c:\users\user\desktop\tube rider\glm\gtx\rotate_vector.hpp
+	"../gtx/transform.hpp"
+	"../gtc/epsilon.hpp"
+	"../ext/vector_relational.hpp"
+	"../glm.hpp"
+	"rotate_vector.inl"
+
+1551126944 c:\users\user\desktop\tube rider\glm\gtx\transform.hpp
+	"../glm.hpp"
+	"../gtc/matrix_transform.hpp"
+	"transform.inl"
+
+1551126944 c:\users\user\desktop\tube rider\glm\gtx\transform.inl
+
+1551126943 c:\users\user\desktop\tube rider\glm\gtx\rotate_vector.inl
 

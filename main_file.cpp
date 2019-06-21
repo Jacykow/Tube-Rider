@@ -18,15 +18,19 @@ Place, Fifth Floor, Boston, MA  02110 - 1301  USA
 */
 
 #define GLM_FORCE_RADIANS
+#define GLM_ENABLE_EXPERIMENTAL
 
-#include <vector>
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtx/rotate_vector.hpp>
 #include <stdlib.h>
 #include <stdio.h>
+#include <fstream>
+#include <vector>
+#include <ctime>
 #include "constants.h"
 #include "allmodels.h"
 #include "lodepng.h"
@@ -34,10 +38,14 @@ Place, Fifth Floor, Boston, MA  02110 - 1301  USA
 #include "myCube.h"
 #include "gameObject.h"
 
-#define OBSTACLES_PER_ROW 8
-#define ROW_AMOUNT 12
+#define OBSTACLES_PER_ROW 16
+#define ROW_AMOUNT 30
 #define FULL_CIRCLE 6.28318530718f
+#define SIN_225 0.38268343236f
+#define DISTANCE_BETWEEN_ROWS 1.0f
 
+using namespace Models;
+using namespace glm;
 typedef unsigned int uint;
 
 float speed_x=0;
@@ -45,32 +53,41 @@ float speed_y=0;
 float shipAngle=0;
 float timeDelta=0;
 float aspectRatio=1;
-float distanceTraveled=0;
+float distanceTraveled=-5;
 int rowId=0;
 
-std::vector<obstacle> objects;
+std::vector<obstacle> obstacles;
 gameObject ship;
-using namespace Models;
-using namespace glm;
 
-void addRow(float z){
+void addRow(int obstacleCount){
     for(uint x=0;x<OBSTACLES_PER_ROW;x++){
         obstacle o;
+
         o.model = &cube;
         o.shaderProgram = spLambert;
-        o.z = z;
+        o.z = distanceTraveled;
         o.orderInRow = x;
-        objects.push_back(o);
+        o.color = vec4(0.8f,0.5f,0.2f,1);
+        o.type = 0;
+        if(rand()%(OBSTACLES_PER_ROW-x)<obstacleCount){
+            obstacleCount--;
+            o.type = 1;
+            o.color = vec4(0.8f,0.0f,0.0f,1);
+        }
+
+        obstacles.push_back(o);
     }
 }
 
 
 
-void init(){ // To się będzie działo raz na start
+void init(){ // To się odpali raz na start
 	glfwSetTime(0);
+	srand(time(NULL));
 
     ship.model = &teapot;
     ship.shaderProgram = spLambert;
+    ship.color = vec4(0,1,0,1);
 }
 
 void update(){ // W każdej klatce
@@ -79,22 +96,22 @@ void update(){ // W każdej klatce
     glfwSetTime(0);
 
     // SHIP
-    shipAngle+=speed_x*timeDelta;
+    shipAngle-=speed_x*timeDelta;
 
     // OBSTACLES
     float distanceDelta = timeDelta * 2.5f;
     distanceTraveled -= distanceDelta;
-    for(uint x=0;x<objects.size();x++){
-        objects[x].z-=distanceDelta;
-        if(objects[x].z < -5){
-            objects.erase(objects.begin()+x);
+    for(uint x=0;x<obstacles.size();x++){
+        obstacles[x].z-=distanceDelta;
+        if(obstacles[x].z < -5){
+            obstacles.erase(obstacles.begin()+x);
             x--;
         }
     }
 
-    while(objects.size() < ROW_AMOUNT*OBSTACLES_PER_ROW){
-        addRow(distanceTraveled);
-        distanceTraveled+=1.0f;
+    while(obstacles.size() < ROW_AMOUNT*OBSTACLES_PER_ROW){
+        addRow(3);
+        distanceTraveled+=DISTANCE_BETWEEN_ROWS;
     }
 }
 
@@ -104,19 +121,22 @@ void prepareToDraw(){ // Przed każdym narysowaniem
     // SHIP
     M = mat4(1.0f);
     M = rotate(M,shipAngle,vec3(0.0f,0.0f,1.0f));
-    M = translate(M,vec3(0.0f,1.0f,0.0f));
-    M = rotate(M,-shipAngle,vec3(0.0f,0.0f,1.0f));
-    M = scale(M,vec3(0.5f,0.5f,0.5f));
+    M = translate(M,vec3(0.0f,-0.8f,0.0f));
+    M = scale(M,vec3(0.3f,0.3f,0.3f));
     ship.drawM = M;
 
     // OBSTACLES
-    for(uint x=0;x<objects.size();x++){
-        float oAngle = FULL_CIRCLE * objects[x].orderInRow / OBSTACLES_PER_ROW;
+    for(uint x=0;x<obstacles.size();x++){
+        float oAngle = FULL_CIRCLE * obstacles[x].orderInRow / OBSTACLES_PER_ROW;
         M = mat4(1.0f);
         M = rotate(M,oAngle,vec3(0.0f,0.0f,1.0f));
-        M = translate(M,vec3(0.0f,-1.0f,objects[x].z));
-        M = scale(M,vec3(0.2f,0.2f,0.2f));
-        objects[x].drawM = M;
+        M = translate(M,vec3(0.0f,-1.0f,obstacles[x].z));
+        if(obstacles[x].type == 0){
+            M = scale(M,vec3(tan(FULL_CIRCLE/OBSTACLES_PER_ROW/2),0.01f,DISTANCE_BETWEEN_ROWS/2));
+        } else {
+            M = scale(M,vec3(0.1f,0.4f,DISTANCE_BETWEEN_ROWS/4));
+        }
+        obstacles[x].drawM = M;
     }
 }
 
@@ -176,20 +196,19 @@ void drawScene(GLFWwindow* window) {
 	glm::mat4 V=glm::lookAt(
          glm::vec3(0, 0, -5),
          glm::vec3(0,0,0),
-         glm::vec3(0.0f,1.0f,0.0f)); //Wylicz macierz widoku
+         glm::rotateZ(vec3(0,1,0),shipAngle)); //Wylicz macierz widoku
 
     glm::mat4 P=glm::perspective(50.0f*PI/180.0f, aspectRatio, 0.01f, 50.0f); //Wylicz macierz rzutowania
 
 
-    spLambert->use();//Aktywacja programu cieniującego
+    ship.shaderProgram->use();//Aktywacja programu cieniującego
     //Przeslij parametry programu cieniującego do karty graficznej
-    glUniform4f(spLambert->u("color"),0,1,0,1);
-    glUniformMatrix4fv(spLambert->u("P"),1,false,glm::value_ptr(P));
-    glUniformMatrix4fv(spLambert->u("V"),1,false,glm::value_ptr(V));
+    glUniformMatrix4fv(ship.shaderProgram->u("P"),1,false,glm::value_ptr(P));
+    glUniformMatrix4fv(ship.shaderProgram->u("V"),1,false,glm::value_ptr(V));
 
     ship.draw();
-    for(uint x=0;x<objects.size();x++){
-        objects[x].draw();
+    for(uint x=0;x<obstacles.size();x++){
+        obstacles[x].draw();
     }
 
     glfwSwapBuffers(window); //Przerzuć tylny bufor na przedni

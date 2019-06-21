@@ -23,7 +23,7 @@ void main(void) {
     mat4 G=mat4(inverse(transpose(mat3(M))));
     vec4 n=normalize(V*G*normal);
 
-    float nl=clamp(dot(n,lightDir),0,1);
+    float nl=clamp(dot(n,lightDir),0,1)*0.5+0.5;
 
     i_color=vec4(color.rgb*nl,color.a);
 }

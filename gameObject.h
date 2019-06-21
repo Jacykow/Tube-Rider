@@ -15,6 +15,7 @@ public:
     glm::mat4 drawM;
     Models::Model* model;
     ShaderProgram* shaderProgram;
+    glm::vec4 color;
     void draw();
 };
 
@@ -22,6 +23,7 @@ class obstacle : public gameObject{
 public:
     float z; // distance to ship
     int orderInRow;
+    int type;
 };
 
 #endif
