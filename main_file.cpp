@@ -45,7 +45,7 @@ std::vector<gameObject> objects;
 using namespace Models;
 
 void init(){ // To się będzie działo raz na start
-	glfwSetTime(0); //Zeruj timer
+	glfwSetTime(0);
 
     gameObject g;
     g.model = &teapot;
