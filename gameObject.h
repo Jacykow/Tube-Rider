@@ -12,11 +12,16 @@
 
 class gameObject{
 public:
-    std::string name;
-    glm::mat4 M;
+    glm::mat4 drawM;
     Models::Model* model;
     ShaderProgram* shaderProgram;
     void draw();
+};
+
+class obstacle : public gameObject{
+public:
+    float z; // distance to ship
+    int orderInRow;
 };
 
 #endif

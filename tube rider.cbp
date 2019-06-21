@@ -55,7 +55,9 @@
 		<Unit filename="f_lambert.glsl" />
 		<Unit filename="f_lamberttextured.glsl" />
 		<Unit filename="f_textured.glsl" />
-		<Unit filename="gameObject.cpp" />
+		<Unit filename="gameObject.cpp">
+			<Option weight="51" />
+		</Unit>
 		<Unit filename="gameObject.h" />
 		<Unit filename="lodepng.cpp" />
 		<Unit filename="lodepng.h" />

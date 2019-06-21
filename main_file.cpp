@@ -34,35 +34,89 @@ Place, Fifth Floor, Boston, MA  02110 - 1301  USA
 #include "myCube.h"
 #include "gameObject.h"
 
+#define OBSTACLES_PER_ROW 8
+#define ROW_AMOUNT 12
+#define FULL_CIRCLE 6.28318530718f
+
+typedef unsigned int uint;
+
 float speed_x=0;
 float speed_y=0;
 float shipAngle=0;
 float timeDelta=0;
 float aspectRatio=1;
+float distanceTraveled=0;
+int rowId=0;
 
-std::vector<gameObject> objects;
+std::vector<obstacle> objects;
+gameObject ship;
 using namespace Models;
 using namespace glm;
+
+void addRow(float z){
+    for(uint x=0;x<OBSTACLES_PER_ROW;x++){
+        obstacle o;
+        o.model = &cube;
+        o.shaderProgram = spLambert;
+        o.z = z;
+        o.orderInRow = x;
+        objects.push_back(o);
+    }
+}
+
+
 
 void init(){ // To się będzie działo raz na start
 	glfwSetTime(0);
 
-    gameObject g;
-    g.model = &teapot;
-    g.shaderProgram = spLambert;
-    objects.push_back(g);
+    ship.model = &teapot;
+    ship.shaderProgram = spLambert;
 }
 
-void update(){ // To się będzie działo w każdej klatce
+void update(){ // W każdej klatce
+    // GLOBAL
+    timeDelta = glfwGetTime();
+    glfwSetTime(0);
 
+    // SHIP
     shipAngle+=speed_x*timeDelta;
 
-    for(int x=0;x<objects.size();x++){
-        objects[x].M=mat4(1.0f);
-        objects[x].M=rotate(objects[x].M,shipAngle,vec3(0.0f,0.0f,1.0f));
-        objects[x].M=translate(objects[x].M,vec3(0.0f,-1.0f,0.0f));
-        objects[x].M=rotate(objects[x].M,-shipAngle,vec3(0.0f,0.0f,1.0f));
+    // OBSTACLES
+    float distanceDelta = timeDelta * 2.5f;
+    distanceTraveled -= distanceDelta;
+    for(uint x=0;x<objects.size();x++){
+        objects[x].z-=distanceDelta;
+        if(objects[x].z < -5){
+            objects.erase(objects.begin()+x);
+            x--;
+        }
+    }
 
+    while(objects.size() < ROW_AMOUNT*OBSTACLES_PER_ROW){
+        addRow(distanceTraveled);
+        distanceTraveled+=1.0f;
+    }
+}
+
+void prepareToDraw(){ // Przed każdym narysowaniem
+    mat4 M;
+
+    // SHIP
+    M = mat4(1.0f);
+    M = rotate(M,shipAngle,vec3(0.0f,0.0f,1.0f));
+    M = translate(M,vec3(0.0f,1.0f,0.0f));
+    M = rotate(M,-shipAngle,vec3(0.0f,0.0f,1.0f));
+    M = scale(M,vec3(0.5f,0.5f,0.5f));
+    ship.drawM = M;
+
+    // OBSTACLES
+    for(uint x=0;x<objects.size();x++){
+        float oAngle = FULL_CIRCLE * objects[x].orderInRow / OBSTACLES_PER_ROW;
+        M = mat4(1.0f);
+        M = rotate(M,oAngle,vec3(0.0f,0.0f,1.0f));
+        M = translate(M,vec3(0.0f,-1.0f,objects[x].z));
+        M = scale(M,vec3(0.2f,0.2f,0.2f));
+        objects[x].drawM = M;
     }
 }
 
@@ -133,8 +187,8 @@ void drawScene(GLFWwindow* window) {
     glUniformMatrix4fv(spLambert->u("P"),1,false,glm::value_ptr(P));
     glUniformMatrix4fv(spLambert->u("V"),1,false,glm::value_ptr(V));
 
-    update();
-    for(int x=0;x<objects.size();x++){
+    ship.draw();
+    for(uint x=0;x<objects.size();x++){
         objects[x].draw();
     }
 
@@ -176,9 +230,8 @@ int main(void)
 	init();
 	while (!glfwWindowShouldClose(window)) //Tak długo jak okno nie powinno zostać zamknięte
 	{
-        timeDelta = glfwGetTime();
-        glfwSetTime(0);
-
+        update();
+        prepareToDraw();
         drawScene(window); //Wykonaj procedurę rysującą
 		glfwPollEvents(); //Wykonaj procedury callback w zalezności od zdarzeń jakie zaszły.
 	}
