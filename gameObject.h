@@ -17,6 +17,7 @@ public:
     glm::vec4 color;
     float rotation;
     void draw(ShaderProgram* shader);
+    GLuint texture;
 };
 
 class obstacle : public gameObject{

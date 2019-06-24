@@ -64,6 +64,11 @@ ShaderProgram* mainShader;
 std::vector<obstacle> obstacles;
 gameObject ship;
 
+GLuint shipTex;
+GLuint obstacleTex;
+GLuint wallTex;
+GLuint rewardTex;
+
 float sign(float a){
     if(a<0)return -1;
     if(a>0)return 1;
@@ -98,18 +103,24 @@ void addRow(int obstacleCount, int type){
         o.color = vec4(0.8f,0.5f,0.2f,1);
         o.type = 0;
         o.rotation = 0;
+        o.texture = wallTex;
         obstacles.push_back(o);
 
+        if(placingDistance < 2.5f){
+            continue;
+        }
         if(rand()%(uint)(OBSTACLES_PER_ROW-x)<obstacleCount){
             obstacleCount--;
             o.type = type;
             o.rotation = PI*(rand()%360-180)/360;
             if(type == 1){
                 // OBSTACLE
+                o.texture = obstacleTex;
                 o.model = &cube;
                 o.color = vec4(0.8f,0.0f,0.0f,1);
             } else {
                 // REWARD
+                o.texture = rewardTex;
                 o.model = &teapot;
                 o.color = vec4(1.0f,0.84f,0.0f,1);
             }
@@ -118,12 +129,42 @@ void addRow(int obstacleCount, int type){
     }
 }
 
+//Funkcja wczytująca teksturę
+GLuint readTexture(const char* filename) {
+  GLuint tex;
+  glActiveTexture(GL_TEXTURE0);
+
+  //Wczytanie do pamięci komputera
+  std::vector<unsigned char> image;   //Alokuj wektor do wczytania obrazka
+  unsigned width, height;   //Zmienne do których wczytamy wymiary obrazka
+  //Wczytaj obrazek
+  unsigned error = lodepng::decode(image, width, height, filename);
+
+  //Import do pamięci karty graficznej
+  glGenTextures(1,&tex); //Zainicjuj jeden uchwyt
+  glBindTexture(GL_TEXTURE_2D, tex); //Uaktywnij uchwyt
+  //Wczytaj obrazek do pamięci KG skojarzonej z uchwytem
+  glTexImage2D(GL_TEXTURE_2D, 0, 4, width, height, 0,
+    GL_RGBA, GL_UNSIGNED_BYTE, (unsigned char*) image.data());
+
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+  return tex;
+}
+
 
 
 void init(){ // To się odpali raz na start
 	glfwSetTime(0);
 	srand(time(NULL));
 
+	shipTex = readTexture("bricks.png");
+	obstacleTex = readTexture("gulij.png");
+	wallTex = readTexture("stone-wall.png");
+	rewardTex = readTexture("golden.png");
+
+	ship.texture = shipTex;
     ship.model = &teapot;
     mainShader = spCustom;
     ship.color = vec4(0,1,0,1);
@@ -273,6 +314,10 @@ void initOpenGLProgram(GLFWwindow* window) {
 //Zwolnienie zasobów zajętych przez program
 void freeOpenGLProgram(GLFWwindow* window) {
     freeShaders();
+    glDeleteTextures(1,&shipTex);
+    glDeleteTextures(1,&obstacleTex);
+    glDeleteTextures(1,&wallTex);
+    glDeleteTextures(1,&rewardTex);
     //************Tutaj umieszczaj kod, który należy wykonać po zakończeniu pętli głównej************
 }
 

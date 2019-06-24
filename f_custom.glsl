@@ -13,7 +13,7 @@ in vec2 itexCoord;
 out vec4 pixelColor;
 
 void main(void) {
-    vec4 c = icolor;
+    vec4 c = texture(tex,itexCoord);
     float light0=clamp(dot(normalize(inormal),normalize(ls0-ipos)),0,1);
     float light1=clamp(dot(normalize(inormal),normalize(ls1-ipos)),0,1);
     light0 = light0*(1-clamp((distance(ipos,ls0))/lf,0,1));

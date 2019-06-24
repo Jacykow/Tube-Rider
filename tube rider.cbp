@@ -52,6 +52,7 @@
 		<Unit filename="cube.h" />
 		<Unit filename="f_colored.glsl" />
 		<Unit filename="f_constant.glsl" />
+		<Unit filename="f_custom.glsl" />
 		<Unit filename="f_lambert.glsl" />
 		<Unit filename="f_lamberttextured.glsl" />
 		<Unit filename="f_textured.glsl" />
@@ -75,9 +76,12 @@
 		<Unit filename="torus.h" />
 		<Unit filename="v_colored.glsl" />
 		<Unit filename="v_constant.glsl" />
+		<Unit filename="v_custom.glsl" />
 		<Unit filename="v_lambert.glsl" />
 		<Unit filename="v_lamberttextured.glsl" />
 		<Unit filename="v_textured.glsl" />
+		<Unit filename="wall.cpp" />
+		<Unit filename="wall.h" />
 		<Extensions>
 			<code_completion />
 			<envvars />
