@@ -2,19 +2,24 @@
 <CodeBlocks_layout_file>
 	<FileVersion major="1" minor="0" />
 	<ActiveTarget name="Debug" />
-	<File name="lodepng.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="0" topLine="18" />
-		</Cursor>
-	</File>
 	<File name="torus.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
 			<Cursor1 position="0" topLine="18" />
 		</Cursor>
 	</File>
-	<File name="wall.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="sphere.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="387" topLine="1" />
+			<Cursor1 position="0" topLine="31" />
+		</Cursor>
+	</File>
+	<File name="gameObject.h" open="1" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="434" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="v_custom.glsl" open="1" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="84" topLine="0" />
 		</Cursor>
 	</File>
 	<File name="teapot.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
@@ -22,14 +27,42 @@
 			<Cursor1 position="1595" topLine="21" />
 		</Cursor>
 	</File>
-	<File name="teapot.cpp" open="0" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="wall.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="1194" topLine="22" />
+			<Cursor1 position="52" topLine="0" />
 		</Cursor>
 	</File>
-	<File name="sphere.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="myCube.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="0" topLine="31" />
+			<Cursor1 position="104" topLine="0" />
+		</Cursor>
+		<Folding>
+			<Collapse line="5" />
+			<Collapse line="67" />
+		</Folding>
+	</File>
+	<File name="allmodels.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="992" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="main_file.cpp" open="1" top="1" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1906" topLine="41" />
+		</Cursor>
+		<Folding>
+			<Collapse line="71" />
+			<Collapse line="77" />
+		</Folding>
+	</File>
+	<File name="lodepng.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="0" topLine="18" />
+		</Cursor>
+	</File>
+	<File name="model.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1167" topLine="9" />
 		</Cursor>
 	</File>
 	<File name="sphere.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
@@ -42,84 +75,9 @@
 			<Cursor1 position="853" topLine="0" />
 		</Cursor>
 	</File>
-	<File name="v_lambert.glsl" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="555" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="gameObject.cpp" open="1" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="332" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="gameObject.h" open="1" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="434" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="cube.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="0" topLine="4" />
-		</Cursor>
-	</File>
-	<File name="f_lamberttextured.glsl" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="177" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="allmodels.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="992" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="wall.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="52" topLine="0" />
-		</Cursor>
-	</File>
 	<File name="f_custom.glsl" open="1" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
 			<Cursor1 position="254" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="model.cpp" open="0" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="989" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="myCube.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="104" topLine="0" />
-		</Cursor>
-		<Folding>
-			<Collapse line="5" />
-			<Collapse line="67" />
-		</Folding>
-	</File>
-	<File name="main_file.cpp" open="1" top="1" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="1944" topLine="41" />
-		</Cursor>
-		<Folding>
-			<Collapse line="71" />
-			<Collapse line="77" />
-			<Collapse line="132" />
-			<Collapse line="157" />
-		</Folding>
-	</File>
-	<File name="v_custom.glsl" open="1" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="84" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="model.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="1167" topLine="9" />
-		</Cursor>
-	</File>
-	<File name="v_lamberttextured.glsl" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="460" topLine="0" />
 		</Cursor>
 	</File>
 	<File name="shaderprogram.cpp" open="0" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
@@ -136,9 +94,49 @@
 			<Collapse line="166" />
 		</Folding>
 	</File>
+	<File name="v_lambert.glsl" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="555" topLine="0" />
+		</Cursor>
+	</File>
 	<File name="shaderprogram.h" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
 			<Cursor1 position="2056" topLine="18" />
+		</Cursor>
+	</File>
+	<File name="v_lamberttextured.glsl" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="460" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="f_lamberttextured.glsl" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="177" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="model.cpp" open="0" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="989" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="cube.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="0" topLine="4" />
+		</Cursor>
+	</File>
+	<File name="gameObject.cpp" open="1" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="332" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="teapot.cpp" open="0" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1194" topLine="22" />
+		</Cursor>
+	</File>
+	<File name="wall.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="387" topLine="1" />
 		</Cursor>
 	</File>
 </CodeBlocks_layout_file>
