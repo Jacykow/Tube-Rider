@@ -50,6 +50,8 @@
 		<Unit filename="constants.h" />
 		<Unit filename="cube.cpp" />
 		<Unit filename="cube.h" />
+		<Unit filename="drone.cpp" />
+		<Unit filename="drone.h" />
 		<Unit filename="f_colored.glsl" />
 		<Unit filename="f_constant.glsl" />
 		<Unit filename="f_lambert.glsl" />
@@ -78,6 +80,8 @@
 		<Unit filename="v_lambert.glsl" />
 		<Unit filename="v_lamberttextured.glsl" />
 		<Unit filename="v_textured.glsl" />
+		<Unit filename="wall.cpp" />
+		<Unit filename="wall.h" />
 		<Extensions>
 			<code_completion />
 			<envvars />
