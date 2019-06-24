@@ -694,7 +694,7 @@
 	<iostream>
 	"lodepng.h"
 
-1561392294 source:c:\users\user\desktop\tube rider\main_file.cpp
+1561398475 source:c:\users\user\desktop\tube rider\main_file.cpp
 	<GL/glew.h>
 	<GLFW/glfw3.h>
 	<glm/glm.hpp>
@@ -710,7 +710,6 @@
 	"allmodels.h"
 	"lodepng.h"
 	"shaderprogram.h"
-	"myCube.h"
 	"gameObject.h"
 
 1551126941 c:\users\user\desktop\tube rider\glm\gtc\type_ptr.hpp
@@ -959,11 +958,12 @@
 1551126941 c:\users\user\desktop\tube rider\glm\gtc\type_ptr.inl
 	<cstring>
 
-1551118666 c:\users\user\desktop\tube rider\allmodels.h
+1561397734 c:\users\user\desktop\tube rider\allmodels.h
 	"cube.h"
 	"sphere.h"
 	"teapot.h"
 	"torus.h"
+	"wall.h"
 
 1553530521 c:\users\user\desktop\tube rider\sphere.h
 	"model.h"
@@ -974,7 +974,7 @@
 1553529970 c:\users\user\desktop\tube rider\torus.h
 	"model.h"
 
-1553429284 c:\users\user\desktop\tube rider\shaderprogram.h
+1561393564 c:\users\user\desktop\tube rider\shaderprogram.h
 	"GL/glew.h"
 	"stdio.h"
 
@@ -983,7 +983,7 @@
 1551121834 source:c:\users\user\desktop\tube rider\model.cpp
 	"model.h"
 
-1561136297 source:c:\users\user\desktop\tube rider\shaderprogram.cpp
+1561393886 source:c:\users\user\desktop\tube rider\shaderprogram.cpp
 	"shaderprogram.h"
 
 1553530569 source:c:\users\user\desktop\tube rider\sphere.cpp
@@ -1005,7 +1005,7 @@
 	"allmodels.h"
 	"shaderprogram.h"
 
-1561391842 source:c:\users\user\desktop\tube rider\gameobject.cpp
+1561393835 source:c:\users\user\desktop\tube rider\gameobject.cpp
 	"gameObject.h"
 
 1551126943 c:\users\user\desktop\tube rider\glm\gtx\rotate_vector.hpp
@@ -1023,4 +1023,10 @@
 1551126944 c:\users\user\desktop\tube rider\glm\gtx\transform.inl
 
 1551126943 c:\users\user\desktop\tube rider\glm\gtx\rotate_vector.inl
+
+1561398521 source:c:\users\user\desktop\tube rider\wall.cpp
+	"wall.h"
+
+1561398355 c:\users\user\desktop\tube rider\wall.h
+	"model.h"
 

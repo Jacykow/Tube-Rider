@@ -35,7 +35,6 @@ Place, Fifth Floor, Boston, MA  02110 - 1301  USA
 #include "allmodels.h"
 #include "lodepng.h"
 #include "shaderprogram.h"
-#include "myCube.h"
 #include "gameObject.h"
 
 #define OBSTACLES_PER_ROW 16
@@ -79,13 +78,13 @@ void collide(int type){
     cType = type;
     if(type == 1){
         hp--;
+        printf("OOF x%d\n",3-hp);
         if(hp<=0){
             exit(0);
         }
-        printf("OOF\n");
     } else if(type == 2) {
         points++;
-        printf("brawo, masz %d punktow!\n", points);
+        printf("Score: %d\n", points);
     }
 }
 
@@ -93,7 +92,7 @@ void addRow(int obstacleCount, int type){
     for(uint x=0;x<OBSTACLES_PER_ROW;x++){
         obstacle o;
 
-        o.model = &cube;
+        o.model = &wall;
         o.z = placingDistance;
         o.orderInRow = x;
         o.color = vec4(0.8f,0.5f,0.2f,1);
@@ -101,12 +100,13 @@ void addRow(int obstacleCount, int type){
         o.rotation = 0;
         obstacles.push_back(o);
 
-        if(rand()%(OBSTACLES_PER_ROW-x)<obstacleCount){
+        if(rand()%(uint)(OBSTACLES_PER_ROW-x)<obstacleCount){
             obstacleCount--;
             o.type = type;
             o.rotation = PI*(rand()%360-180)/360;
             if(type == 1){
                 // OBSTACLE
+                o.model = &cube;
                 o.color = vec4(0.8f,0.0f,0.0f,1);
             } else {
                 // REWARD
@@ -125,7 +125,7 @@ void init(){ // To się odpali raz na start
 	srand(time(NULL));
 
     ship.model = &teapot;
-    mainShader = spLambert;
+    mainShader = spCustom;
     ship.color = vec4(0,1,0,1);
 }
 
@@ -154,8 +154,10 @@ void update(){ // W każdej klatce
 
     while(obstacles.size() < ROW_AMOUNT*OBSTACLES_PER_ROW){
         float difficulty = distanceTraveled / 50 - 2;
+
         difficulty = 0.4 + difficulty * 0.2 / (sqrt(1 + difficulty * difficulty));
         if(difficulty < 0) difficulty = 0;
+        glUniform1f(mainShader->u("lf"),(1-difficulty)*20.0f+2.0f);
 
         if(friendly){
             addRow(difficulty * OBSTACLES_PER_ROW / 3, 2);
@@ -167,14 +169,14 @@ void update(){ // W każdej klatce
     }
 
     int m=0;
-    for(int x=1;x<obstacles.size();x++){
+    for(uint x=1;x<obstacles.size();x++){
         if(abs(obstacles[x].z)<=abs(obstacles[m].z)){
             m=x;
         } else {
             break;
         }
     }
-    for(int x=m-1;x>=0;x--){
+    for(uint x=m-1;x>=0;x--){
         if(obstacles[x].z < obstacles[m].z){
             break;
         }
@@ -193,12 +195,21 @@ void update(){ // W każdej klatce
 void prepareToDraw(){ // Przed każdym narysowaniem
     mat4 M;
 
+    vec4 lightSource = vec4(0,0,0,1);
+
     // SHIP
     M = mat4(1.0f);
     M = rotate(M,shipAngle,vec3(0.0f,0.0f,1.0f));
     M = translate(M,vec3(0.0f,-0.8f,0.0f));
+    lightSource = translate(M,vec3(0.0f,0.3f,-0.3f))*lightSource;
     M = scale(M,vec3(0.3f,0.3f,0.3f));
     ship.drawM = M;
+
+    glUniform4f(mainShader->u("ls1"),
+                lightSource.x,lightSource.y,
+                lightSource.z,lightSource.w);
+
+
     float width=tan(FULL_CIRCLE/OBSTACLES_PER_ROW/2);
 
     // OBSTACLES
@@ -208,7 +219,7 @@ void prepareToDraw(){ // Przed każdym narysowaniem
         M = rotate(M,oAngle,vec3(0.0f,0.0f,1.0f));
         M = translate(M,vec3(0.0f,-1.0f,obstacles[x].z));
         if(obstacles[x].type == 0){
-            M = scale(M,vec3(width,0.01f,DISTANCE_BETWEEN_ROWS/2));
+            M = scale(M,vec3(width,1.0f,DISTANCE_BETWEEN_ROWS/2));
         } else if(obstacles[x].type == 1){
             M = translate(M,vec3(0.0f,width/2,0.0f));
             M = scale(M,vec3(width/2,width/2,width/2));
@@ -284,6 +295,7 @@ void drawScene(GLFWwindow* window) {
     //Przeslij parametry programu cieniującego do karty graficznej
     glUniformMatrix4fv(mainShader->u("P"),1,false,glm::value_ptr(P));
     glUniformMatrix4fv(mainShader->u("V"),1,false,glm::value_ptr(V));
+    glUniform4f(mainShader->u("ls0"),0,0,8,1);
 
     ship.draw(mainShader);
     for(uint x=0;x<obstacles.size();x++){
