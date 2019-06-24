@@ -125,6 +125,12 @@ void init(){ // To się odpali raz na start
 	srand(time(NULL));
 
     ship.model = &teapot;
+<<<<<<< Updated upstream
+=======
+
+    //ship.model = &drone;
+//Stashed changes
+>>>>>>> Stashed changes
     mainShader = spCustom;
     ship.color = vec4(0,1,0,1);
 }
