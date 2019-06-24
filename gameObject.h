@@ -14,9 +14,9 @@ class gameObject{
 public:
     glm::mat4 drawM;
     Models::Model* model;
-    ShaderProgram* shaderProgram;
     glm::vec4 color;
-    void draw();
+    float rotation;
+    void draw(ShaderProgram* shader);
 };
 
 class obstacle : public gameObject{

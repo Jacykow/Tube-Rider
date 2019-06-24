@@ -48,6 +48,8 @@ using namespace Models;
 using namespace glm;
 typedef unsigned int uint;
 
+int hp=3;
+int points=0;
 float speed_x=0;
 float speed_y=0;
 float shipAngle=0;
@@ -57,11 +59,18 @@ float placingDistance=-5;
 float distanceTraveled=1;
 int rowId=0;
 bool friendly=false;
+int cType = 0;
+ShaderProgram* mainShader;
 
 std::vector<obstacle> obstacles;
 gameObject ship;
 
-int cType = 0;
+float sign(float a){
+    if(a<0)return -1;
+    if(a>0)return 1;
+    return 0;
+}
+
 void collide(int type){
     if(type==cType){
         cType = type;
@@ -69,9 +78,14 @@ void collide(int type){
     }
     cType = type;
     if(type == 1){
+        hp--;
+        if(hp<=0){
+            exit(0);
+        }
         printf("OOF\n");
     } else if(type == 2) {
-        printf("brawo (sarkastycznie niczym seba)\n");
+        points++;
+        printf("brawo, masz %d punktow!\n", points);
     }
 }
 
@@ -80,19 +94,23 @@ void addRow(int obstacleCount, int type){
         obstacle o;
 
         o.model = &cube;
-        o.shaderProgram = spLambert;
         o.z = placingDistance;
         o.orderInRow = x;
         o.color = vec4(0.8f,0.5f,0.2f,1);
         o.type = 0;
+        o.rotation = 0;
         obstacles.push_back(o);
 
         if(rand()%(OBSTACLES_PER_ROW-x)<obstacleCount){
             obstacleCount--;
             o.type = type;
+            o.rotation = PI*(rand()%360-180)/360;
             if(type == 1){
+                // OBSTACLE
                 o.color = vec4(0.8f,0.0f,0.0f,1);
             } else {
+                // REWARD
+                o.model = &teapot;
                 o.color = vec4(1.0f,0.84f,0.0f,1);
             }
             obstacles.push_back(o);
@@ -107,7 +125,7 @@ void init(){ // To się odpali raz na start
 	srand(time(NULL));
 
     ship.model = &teapot;
-    ship.shaderProgram = spLambert;
+    mainShader = spLambert;
     ship.color = vec4(0,1,0,1);
 }
 
@@ -117,7 +135,7 @@ void update(){ // W każdej klatce
     glfwSetTime(0);
 
     // SHIP
-    shipAngle=shipAngle-speed_x*timeDelta;
+    shipAngle=shipAngle-speed_x*timeDelta*1.5f;
     if(shipAngle > FULL_CIRCLE)shipAngle-=FULL_CIRCLE;
     if(shipAngle < 0)shipAngle+=FULL_CIRCLE;
 
@@ -127,6 +145,7 @@ void update(){ // W każdej klatce
     placingDistance -= distanceDelta;
     for(uint x=0;x<obstacles.size();x++){
         obstacles[x].z-=distanceDelta;
+        obstacles[x].rotation+=timeDelta*sign(obstacles[x].rotation);
         if(obstacles[x].z < -5){
             obstacles.erase(obstacles.begin()+x);
             x--;
@@ -180,6 +199,7 @@ void prepareToDraw(){ // Przed każdym narysowaniem
     M = translate(M,vec3(0.0f,-0.8f,0.0f));
     M = scale(M,vec3(0.3f,0.3f,0.3f));
     ship.drawM = M;
+    float width=tan(FULL_CIRCLE/OBSTACLES_PER_ROW/2);
 
     // OBSTACLES
     for(uint x=0;x<obstacles.size();x++){
@@ -188,10 +208,15 @@ void prepareToDraw(){ // Przed każdym narysowaniem
         M = rotate(M,oAngle,vec3(0.0f,0.0f,1.0f));
         M = translate(M,vec3(0.0f,-1.0f,obstacles[x].z));
         if(obstacles[x].type == 0){
-            M = scale(M,vec3(tan(FULL_CIRCLE/OBSTACLES_PER_ROW/2),0.01f,DISTANCE_BETWEEN_ROWS/2));
-        } else {
-            M = scale(M,vec3(0.1f,0.4f,DISTANCE_BETWEEN_ROWS/4));
+            M = scale(M,vec3(width,0.01f,DISTANCE_BETWEEN_ROWS/2));
+        } else if(obstacles[x].type == 1){
+            M = translate(M,vec3(0.0f,width/2,0.0f));
+            M = scale(M,vec3(width/2,width/2,width/2));
+        } else if(obstacles[x].type == 2){
+            M = translate(M,vec3(0.0f,width/2,0.0f));
+            M = scale(M,vec3(width,width,width));
         }
+        M = rotate(M,obstacles[x].rotation,vec3(0.0f,1.0f,0.0f));
         obstacles[x].drawM = M;
     }
 }
@@ -255,14 +280,14 @@ void drawScene(GLFWwindow* window) {
     glm::mat4 P=glm::perspective(50.0f*PI/180.0f, aspectRatio, 0.01f, 50.0f); //Wylicz macierz rzutowania
 
 
-    ship.shaderProgram->use();//Aktywacja programu cieniującego
+    mainShader->use();//Aktywacja programu cieniującego
     //Przeslij parametry programu cieniującego do karty graficznej
-    glUniformMatrix4fv(ship.shaderProgram->u("P"),1,false,glm::value_ptr(P));
-    glUniformMatrix4fv(ship.shaderProgram->u("V"),1,false,glm::value_ptr(V));
+    glUniformMatrix4fv(mainShader->u("P"),1,false,glm::value_ptr(P));
+    glUniformMatrix4fv(mainShader->u("V"),1,false,glm::value_ptr(V));
 
-    ship.draw();
+    ship.draw(mainShader);
     for(uint x=0;x<obstacles.size();x++){
-        obstacles[x].draw();
+        obstacles[x].draw(mainShader);
     }
 
     glfwSwapBuffers(window); //Przerzuć tylny bufor na przedni
