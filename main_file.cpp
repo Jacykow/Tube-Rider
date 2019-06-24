@@ -158,6 +158,7 @@ void update(){ // W każdej klatce
         difficulty = 0.4 + difficulty * 0.2 / (sqrt(1 + difficulty * difficulty));
         if(difficulty < 0) difficulty = 0;
         glUniform1f(mainShader->u("lf"),(1-difficulty)*20.0f+2.0f);
+        glUniform4f(mainShader->u("ls0"),0,0,(1-difficulty)*10.0f,1);
 
         if(friendly){
             addRow(difficulty * OBSTACLES_PER_ROW / 3, 2);
@@ -295,7 +296,6 @@ void drawScene(GLFWwindow* window) {
     //Przeslij parametry programu cieniującego do karty graficznej
     glUniformMatrix4fv(mainShader->u("P"),1,false,glm::value_ptr(P));
     glUniformMatrix4fv(mainShader->u("V"),1,false,glm::value_ptr(V));
-    glUniform4f(mainShader->u("ls0"),0,0,8,1);
 
     ship.draw(mainShader);
     for(uint x=0;x<obstacles.size();x++){
