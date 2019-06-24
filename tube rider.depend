@@ -694,7 +694,7 @@
 	<iostream>
 	"lodepng.h"
 
-1561399892 source:c:\users\user\desktop\tube rider\main_file.cpp
+1561402375 source:c:\users\user\desktop\tube rider\main_file.cpp
 	<GL/glew.h>
 	<GLFW/glfw3.h>
 	<glm/glm.hpp>
@@ -1024,9 +1024,16 @@
 
 1551126943 c:\users\user\desktop\tube rider\glm\gtx\rotate_vector.inl
 
-1561398521 source:c:\users\user\desktop\tube rider\wall.cpp
+1561401636 source:c:\users\user\desktop\tube rider\wall.cpp
 	"wall.h"
 
 1561398355 c:\users\user\desktop\tube rider\wall.h
 	"model.h"
+
+1561401494 source:c:\users\user\desktop\tube rider\drone.cpp
+	"drone.h"
+
+1561401636 c:\users\user\desktop\tube rider\drone.h
+	<string>
+	<sstream>
 
