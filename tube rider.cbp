@@ -50,6 +50,8 @@
 		<Unit filename="constants.h" />
 		<Unit filename="cube.cpp" />
 		<Unit filename="cube.h" />
+		<Unit filename="drone.cpp" />
+		<Unit filename="drone.h" />
 		<Unit filename="f_colored.glsl" />
 		<Unit filename="f_constant.glsl" />
 		<Unit filename="f_custom.glsl" />

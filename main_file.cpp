@@ -59,6 +59,7 @@ float distanceTraveled=1;
 int rowId=0;
 bool friendly=false;
 int cType = 0;
+int kappa=1;
 ShaderProgram* mainShader;
 
 std::vector<obstacle> obstacles;
@@ -159,13 +160,13 @@ void init(){ // To się odpali raz na start
 	glfwSetTime(0);
 	srand(time(NULL));
 
-	shipTex = readTexture("bricks.png");
+	shipTex = readTexture("viper.png");
 	obstacleTex = readTexture("gulij.png");
 	wallTex = readTexture("stone-wall.png");
 	rewardTex = readTexture("golden.png");
 
 	ship.texture = shipTex;
-    ship.model = &teapot;
+    ship.model = &drone;
     mainShader = spCustom;
     ship.color = vec4(0,1,0,1);
 }
@@ -244,7 +245,7 @@ void prepareToDraw(){ // Przed każdym narysowaniem
     M = rotate(M,shipAngle,vec3(0.0f,0.0f,1.0f));
     M = translate(M,vec3(0.0f,-0.8f,0.0f));
     lightSource = translate(M,vec3(0.0f,0.3f,-0.3f))*lightSource;
-    M = scale(M,vec3(0.3f,0.3f,0.3f));
+    M = scale(M,vec3(0.13f,0.13f,0.13f));
     ship.drawM = M;
 
     glUniform4f(mainShader->u("ls1"),
