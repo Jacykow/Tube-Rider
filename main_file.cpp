@@ -119,6 +119,7 @@ void addRow(int obstacleCount, int type){
                 o.texture = obstacleTex;
                 o.model = &cube;
                 o.color = vec4(0.8f,0.0f,0.0f,1);
+                o.smooth = false;
             } else {
                 // REWARD
                 o.texture = rewardTex;
@@ -161,7 +162,7 @@ void init(){ // To się odpali raz na start
 	srand(time(NULL));
 
 	shipTex = readTexture("viper.png");
-	obstacleTex = readTexture("gulij.png");
+	obstacleTex = readTexture("pope.png");
 	wallTex = readTexture("stone-wall.png");
 	rewardTex = readTexture("golden.png");
 
@@ -243,9 +244,10 @@ void prepareToDraw(){ // Przed każdym narysowaniem
     // SHIP
     M = mat4(1.0f);
     M = rotate(M,shipAngle,vec3(0.0f,0.0f,1.0f));
-    M = translate(M,vec3(0.0f,-0.8f,0.0f));
+    M = translate(M,vec3(0.0f,-0.9f,0.0f));
     lightSource = translate(M,vec3(0.0f,0.3f,-0.3f))*lightSource;
-    M = scale(M,vec3(0.13f,0.13f,0.13f));
+    M = scale(M,vec3(0.08f,0.08f,0.08f));
+    M = rotate(M,FULL_CIRCLE/4,vec3(0.0f,1.0f,0.0f));
     ship.drawM = M;
 
     glUniform4f(mainShader->u("ls1"),

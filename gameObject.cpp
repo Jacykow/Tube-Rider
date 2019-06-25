@@ -9,5 +9,5 @@ void gameObject::draw(ShaderProgram* shader){
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D,texture);
 
-    model->drawSolid(true);
+    model->drawSolid(smooth);
 }

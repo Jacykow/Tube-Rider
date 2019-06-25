@@ -18,6 +18,7 @@ public:
     float rotation;
     void draw(ShaderProgram* shader);
     GLuint texture;
+    bool smooth = true;
 };
 
 class obstacle : public gameObject{
