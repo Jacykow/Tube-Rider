@@ -286,13 +286,13 @@ void error_callback(int error, const char* description) {
 
 void keyCallback(GLFWwindow* window,int key,int scancode,int action,int mods) {
     if (action==GLFW_PRESS) {
-        if (key==GLFW_KEY_LEFT) speed_x=-1;
-        if (key==GLFW_KEY_RIGHT) speed_x=1;
+        if (key==GLFW_KEY_LEFT) speed_x-=1;
+        if (key==GLFW_KEY_RIGHT) speed_x+=1;
         if (key==GLFW_KEY_UP) speed_y=1;
     }
     if (action==GLFW_RELEASE) {
-        if (key==GLFW_KEY_LEFT) speed_x=0;
-        if (key==GLFW_KEY_RIGHT) speed_x=0;
+        if (key==GLFW_KEY_LEFT) speed_x+=1;
+        if (key==GLFW_KEY_RIGHT) speed_x-=1;
         if (key==GLFW_KEY_UP) speed_y=0;
     }
 }
