@@ -162,7 +162,7 @@ void init(){ // To się odpali raz na start
 	srand(time(NULL));
 
 	shipTex = readTexture("viper.png");
-	obstacleTex = readTexture("pope.png");
+	obstacleTex = readTexture("gulij.png");
 	wallTex = readTexture("stone-wall.png");
 	rewardTex = readTexture("golden.png");
 
